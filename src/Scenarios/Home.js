@@ -5,7 +5,7 @@ export default () => {
     <>
       <h1>Protect yourself</h1>
       <h2>
-        We offer top-notchprotection for your passwords, identity and privacy.
+        We offer top-notch protection for your passwords, identity and privacy.
         Anywhere, on any device, no matter what.
       </h2>
     </>

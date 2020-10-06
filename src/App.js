@@ -12,6 +12,7 @@ import About from "src/Scenarios/About";
 import Signup from "src/Scenarios/SignUp";
 import GlobalStyle from "src/Styles/GlobalStyle";
 import * as colors from "src/Styles/Colors";
+
 function App() {
   return (
     <div className="App">
@@ -57,8 +58,15 @@ const BodyLayout = styled.div`
 `;
 
 const Main = styled.main`
+  height: 100vh;
+  width: 100vw;
+
   flex: 1;
   outline: 1px solid black;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Navbar = styled.nav`
@@ -69,7 +77,6 @@ const Navbar = styled.nav`
   justify-content: space-around;
 
   background-color: #000000;
-  direction: rtl;
   border-bottom: 4px solid #ffea00;
 
   background-color: ${colors.black};
