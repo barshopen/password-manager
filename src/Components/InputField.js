@@ -3,14 +3,20 @@ import styled from "styled-components";
 import * as colors from "src/Styles/Colors";
 
 export default (props) => {
+  function onChangeHandler(e) {
+    const val = e.target.value;
+    props.onChangeHandler(props.property_name, val);
+  }
+
   return (
     <FloatContainer>
       <input
         type={props.type}
         id={props.property_name}
         placeholder={props.property_name}
+        onChange={onChangeHandler}
       />
-      <label for={props.property_name}>{props.property_name}</label>
+      <label htmlFor={props.property_name}>{props.property_name}</label>
     </FloatContainer>
   );
 };
