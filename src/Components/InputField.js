@@ -13,10 +13,12 @@ export default (props) => {
       <input
         type={props.type}
         id={props.property_name}
-        placeholder={props.property_name}
+        placeholder={props.property_label || props.property_name}
         onChange={onChangeHandler}
       />
-      <label htmlFor={props.property_name}>{props.property_name}</label>
+      <label htmlFor={props.property_name}>
+        {props.property_label || props.property_name}
+      </label>
     </FloatContainer>
   );
 };
@@ -24,9 +26,8 @@ export default (props) => {
 const FloatContainer = styled.div`
   position: relative;
 
-  margin: 1em;
   transition: all 0.3s;
-
+  text-transform: capitalize;
   & label {
     font-size: 1em;
     color: #aaa;

@@ -3,18 +3,23 @@ import styled from "styled-components";
 import Container from "src/Components/Container";
 import InputField from "src/Components/InputField";
 
-const formState = {
-  Name: "",
-  Email: "",
-  password: "",
-  confirm_password: "",
-};
+const formState = {};
 export default () => {
   const [form, setForm] = useState(formState);
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(form);
+    window
+    .fetch('/signup', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json;charset=UTF-8',
+        delay: 1500,
+            },
+      body: JSON.stringify({
+        form: form
+      }),
+    })
   }
 
   function onChangeHandler(property, val) {
@@ -38,6 +43,7 @@ export default () => {
           onChangeHandler={onChangeHandler}
         />
         <InputField
+          property_label="confirm password"
           property_name="confirm_password"
           type="password"
           onChangeHandler={onChangeHandler}
@@ -56,7 +62,17 @@ const Submit = styled.input`
 
   width: 150px;
   height: 30px;
-  background: dodgerblue;
-  border-radius: 6px;
+  border-radius: 3px;
   border: none;
+  box-shadow: none;
+
+
+  padding: 10px 20px;
+  min-height: 34px;
+  background-color: #008941;
+  box-shadow: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: none;
 `;
