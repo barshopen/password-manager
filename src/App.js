@@ -14,6 +14,14 @@ import GlobalStyle from "src/Styles/GlobalStyle";
 import * as colors from "src/Styles/Colors";
 
 function App() {
+  const [currentTime, setCurrentTime] = React.useState(0)
+
+  React.useEffect(()=>{
+    fetch('/time').then(res=>res.json()).then(data=>{
+      setCurrentTime(Math.round(data.time))
+    });
+  }, [])
+
   return (
     <div className="App">
       <GlobalStyle />
@@ -42,7 +50,7 @@ function App() {
             </Switch>
           </Main>
 
-          <footer>foot</footer>
+          <footer>foot {currentTime}</footer>
         </BodyLayout>
       </Router>
     </div>
