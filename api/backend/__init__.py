@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 config = configparser.ConfigParser()
 config.read('.config')
-print(config.sections())
+
 if 'SECRETS' not in config:
     raise Exception(
         ".config file isn't structured properly, please look at .config-TEMPLATE for help")
@@ -29,7 +29,5 @@ key = config['SECRETS']['SymetricKeyBytes'].encode("utf-8")
 
 fernet = Fernet(key)
 
-print("hi")
-print(__name__)
 from backend import routes  # nopep8
 from backend import models  # nopep8

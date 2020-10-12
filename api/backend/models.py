@@ -8,7 +8,6 @@ from backend import bcrypt, db, fernet
 
 
 EXPIRED_IN = datetime.timedelta(hours=2)
-db.create_all()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,8 +28,9 @@ class User(db.Model):
     @staticmethod
     def create(email: str, password: str) -> 'User':
         """Create a new user."""
-        user = User(password_hash="1", email=email)
-        user.password(password)
+        print("reached create method")
+        user = User(email=email)
+        user.password = password
 
         db.session.add(user)
         db.session.commit()
@@ -94,4 +94,3 @@ def get_user(email: str) -> User:
 
 db.drop_all()
 db.create_all()
-

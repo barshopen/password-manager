@@ -1,7 +1,7 @@
 import time
 from flask import render_template, url_for, jsonify, request, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from backend import app, db
+from backend import app, db, auth
 
 
 @app.route('/time')
@@ -22,21 +22,23 @@ def retrieve_password():
 @app.route("/login", methods=['POST'], strict_slashes=False)
 def login():
     form = request.form.to_dict()
-    username = form.get('email')
+    email = form.get('email')
     password = form.get('password')
-    print(username, password)
-    return username, password
-    # return auth.authenticate_user(username, password)
+    return auth.authenticate_user(email, password)
 
 
 @app.route("/sign_up", methods=['POST'], strict_slashes=False)
 def register():
     form = request.form.to_dict()
+    print(form)
     name = form.get('name')
     password = form.get('password')
     confirm_password = form.get('confirm_password')
     email = form.get('email')
-    return (name, email, password, confirm_password)
+
+    user =  auth.register_user(email, password, confirm_password)
+    print(user)
+    return user
     # return auth.register_user(name, email, password, confirm_password)
 
 
