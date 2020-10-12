@@ -1,14 +1,14 @@
 import os
+import datetime
 from flask import abort
 from enum import Enum
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token
-from backend import bcrypt, db
-import datetime
+from backend import bcrypt, db, fernet
 
 
 EXPIRED_IN = datetime.timedelta(hours=2)
-
+db.create_all()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -55,24 +55,34 @@ class User(db.Model):
 
 class SavedPassword(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    # this is the message sender if is_sender, else it's the  receiver
-    is_sender = db.Column(db.Boolean, nullable=False, default=False)
-    saved_password = db.Column(db.String(128), nullable=False)
+    saved_password_encrypted = db.Column(db.String(128), nullable=False)
     domain = db.Column(db.String(1024), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
 
     user = db.relationship(User, foreign_keys=[user_id])
+    __table_args__ = (db.UniqueConstraint('domain', 'user_id'),)
 
     @staticmethod
-    def create(email: str, password: str) -> 'User':
+    def create(email:str, domain:str, saved_password:str) -> 'User':
         """Create a new user."""
-        saved_password_entity =
+        saved_password_encrypted = fernet.encrypt(saved_password.encode('utf-8'))
+        user_id = User.find_user_by_email(email).id
 
-        db.session.add(user)
+        saved_password_row = SavedPassword(
+            user_id=user_id, 
+            domain=domain,
+            saved_password_encrypted=saved_password_encrypted 
+        )
+
+        db.session.add(saved_password_row)
         db.session.commit()
-        return user  # .__dict__ ?
+        return saved_password_row  # .__dict__ ?
 
+    @staticmethod
+    def get_password(email:str, domain:str)->'User':
+        saved_password_row = SavedPassword.query.filter_by(email=email ,domain=domain).first()
+        return fernet.decrypt(saved_password_row.saved_password_encrypted)
 
 def get_user_id(email: str) -> int:
     return get_user(email).id
@@ -82,6 +92,6 @@ def get_user(email: str) -> User:
     return User.query.filter_by(email=email).first()
 
 
-# some initial data to help me debug
 db.drop_all()
 db.create_all()
+
