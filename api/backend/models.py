@@ -28,7 +28,6 @@ class User(db.Model):
     @staticmethod
     def create(email: str, password: str) -> 'User':
         """Create a new user."""
-        print("reached create method")
         user = User(email=email)
         user.password = password
 
@@ -45,7 +44,6 @@ class User(db.Model):
         return User.query.filter_by(id=id).first()
 
     def verify(self, password):
-        print(check_password_hash(self.password_hash.encode("utf-8"), password))
         return check_password_hash(self.password_hash.encode("utf-8"), password)
 
     def issue_token(self):
@@ -55,7 +53,7 @@ class User(db.Model):
 
 class SavedPassword(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    saved_password_encrypted = db.Column(db.String(128), nullable=False)
+    saved_password = db.Column(db.String(128), nullable=False)
     domain = db.Column(db.String(1024), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
@@ -64,25 +62,34 @@ class SavedPassword(db.Model):
     __table_args__ = (db.UniqueConstraint('domain', 'user_id'),)
 
     @staticmethod
-    def create(email:str, domain:str, saved_password:str) -> 'User':
+    def create(email:str, domain:str, password:str) -> 'User':
         """Create a new user."""
-        saved_password_encrypted = fernet.encrypt(saved_password.encode('utf-8'))
         user_id = User.find_user_by_email(email).id
 
         saved_password_row = SavedPassword(
             user_id=user_id, 
             domain=domain,
-            saved_password_encrypted=saved_password_encrypted 
         )
-
+        saved_password_row.password = password
         db.session.add(saved_password_row)
         db.session.commit()
         return saved_password_row  # .__dict__ ?
+    
+    @property
+    def password(self):
+        return fernet.decrypt(self.saved_password).decode('utf-8')
+
+
+    @password.setter
+    def password(self, new_password):
+        self.saved_password = fernet.encrypt(new_password.encode('utf-8'))
+
 
     @staticmethod
-    def get_password(email:str, domain:str)->'User':
-        saved_password_row = SavedPassword.query.filter_by(email=email ,domain=domain).first()
-        return fernet.decrypt(saved_password_row.saved_password_encrypted)
+    def get(email:str, domain:str)->'User':
+        user = User.query.filter_by(email=email).first()
+        saved_password_row = SavedPassword.query.filter_by(user_id=user.id ,domain=domain).first()
+        return saved_password_row.password
 
 def get_user_id(email: str) -> int:
     return get_user(email).id
