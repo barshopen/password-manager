@@ -4,6 +4,7 @@ from backend.models import SavedPassword
 def store_password(email, domain, password):
     #TODO add 400's for: password already saved domain. change password instead.(or just do it? wdyt)
     #TODO add 400's for anyting else... basically 'debug me'
+
     if not (domain and password):
         abort(422, "Encountered empty domain name and/or password property. I need both to save your password")
     password_row = SavedPassword.create(email, domain, password)
