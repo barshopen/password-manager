@@ -1,3 +1,13 @@
 [SECRETS]
-LoginManagerKey = 1111111
-SymetricKey
+LoginManagerKey = secret
+SymetricKey = secret
+
+[development]
+SQLALCHEMY_DATABASE_URI = sqlite:///site.db
+
+[production]
+SQLALCHEMY_DATABASE_USER = root
+SQLALCHEMY_DATABASE_PASSWORD = secret
+SQLALCHEMY_DATABASE_PORT = 3306
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://${SQLALCHEMY_DATABASE_USER}:${SQLALCHEMY_DATABASE_PASSWORD}@127.0.0.1:${SQLALCHEMY_DATABASE_PORT}/password_manager'
+

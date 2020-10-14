@@ -18,6 +18,6 @@ def retrieve_password(email, domain):
     #TODO add 400's for anyting else... basically 'debug me'
     if not (domain):
         abort(422, "Encountered empty domain name property. I need it to retrieve the correct password")
-    password = SavedPassword.get(email, domain)
+    password = SavedPassword.get_password(email, domain)
 
     return {"email": email, "password":password}

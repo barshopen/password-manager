@@ -8,16 +8,16 @@ from cryptography.fernet import Fernet
 
 app = Flask(__name__)
 
-config = configparser.ConfigParser()
+config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 config.read('.config')
+environment = os.environ['FLASK_ENV']
 
 if 'SECRETS' not in config:
     raise Exception(
         ".config file isn't structured properly, please look at .config-TEMPLATE for help")
-
 app.config['JWT_SECRET_KEY'] = config['SECRETS']['LoginManagerKey']
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = config.get(environment, 'SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 

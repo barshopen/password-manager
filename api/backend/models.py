@@ -4,8 +4,8 @@ from flask import abort
 from enum import Enum
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token
-from backend import bcrypt, db, fernet
-
+from backend import bcrypt, db, fernet, environment
+import sqlalchemy
 
 EXPIRED_IN = datetime.timedelta(hours=2)
 
@@ -71,8 +71,19 @@ class SavedPassword(db.Model):
             domain=domain,
         )
         saved_password_row.password = password
-        db.session.add(saved_password_row)
-        db.session.commit()
+        try:
+            db.session.add(saved_password_row)
+            db.session.commit()
+
+        except sqlalchemy.exc.IntegrityError as e:
+            db.session.rollback()
+            existing_password = SavedPassword.get(email, domain)
+            db.session.delete(existing_password)
+            db.session.commit()
+
+            db.session.add(saved_password_row)
+            db.session.commit()
+
         return saved_password_row  # .__dict__ ?
     
     @property
@@ -84,12 +95,20 @@ class SavedPassword(db.Model):
     def password(self, new_password):
         self.saved_password = fernet.encrypt(new_password.encode('utf-8'))
 
+    
+    @staticmethod
+    def get_password(email:str, domain:str)->'User':
+        return SavedPassword.get(email, domain).password
 
     @staticmethod
     def get(email:str, domain:str)->'User':
         user = User.query.filter_by(email=email).first()
         saved_password_row = SavedPassword.query.filter_by(user_id=user.id ,domain=domain).first()
-        return saved_password_row.password
+        return saved_password_row
+
+    def __repr__(self):
+        return f"PasswordEntity('{self.user_id, self.saved_password, self.domain}')"
+
 
 def get_user_id(email: str) -> int:
     return get_user(email).id
@@ -98,6 +117,7 @@ def get_user_id(email: str) -> int:
 def get_user(email: str) -> User:
     return User.query.filter_by(email=email).first()
 
-
-db.drop_all()
-db.create_all()
+if environment == "development":
+    db.drop_all()
+    db.create_all()
+    User.create("bar.shopen@gmail.com", "secretsecretsecret")
