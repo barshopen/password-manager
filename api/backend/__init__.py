@@ -12,7 +12,7 @@ load_dotenv()
 app = Flask(__name__, static_folder="../../build", static_url_path="/")
 
 config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
-config.read('.config')
+config.read('configfile')
 environment = os.environ['FLASK_ENV']
 
 if 'SECRETS' not in config:

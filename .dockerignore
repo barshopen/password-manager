@@ -1,8 +1,6 @@
 README.md
+**/__pycache__
+**/node_modules
+**/site.db
 
-*/*/node_modules*
-*/*/.vscode*
-*/*/site.db
 
-!*/*/.env
-!*/*/.config

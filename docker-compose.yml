@@ -4,6 +4,10 @@ services:
     build: .
     ports:
       - 8000:8000
+    environment:
+      - FLASK_APP=api.py
+      - FLASK_ENV=production
+      - ENV_FILE_LOCATION=configfile
   mysql-server:
     image: mysql:latest
     restart: always
