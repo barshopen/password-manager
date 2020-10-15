@@ -1,10 +1,13 @@
 import configparser
 import os
+from dotenv import load_dotenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from cryptography.fernet import Fernet
+
+load_dotenv()
 
 app = Flask(__name__, static_folder="../../build", static_url_path="/")
 

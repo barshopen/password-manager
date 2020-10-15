@@ -1,10 +1,10 @@
 import React from "react";
-import {
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  NavLink,
-} from "react-router-dom";
+// import {
+//   Route,
+//   BrowserRouter as Router,
+//   Switch,
+//   NavLink,
+// } from "react-router-dom";
 import styled from "styled-components";
 import Home from "src/Scenarios/Home";
 import Contact from "src/Scenarios/Contact";
@@ -25,7 +25,7 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <Router>
+      {/* <Router>
         <BodyLayout>
           <Navbar>
             <NavLink to="/" activeClassName="selected">
@@ -52,7 +52,9 @@ function App() {
 
           <footer>foot {currentTime}</footer>
         </BodyLayout>
-      </Router>
+      </Router> */}
+      <Signup/>
+
     </div>
   );
 }
