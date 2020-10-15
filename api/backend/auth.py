@@ -13,7 +13,7 @@ def register_user(email:str, password:str, repeat_password:str)-> int:
     """
     # this shouldn't be here...
     if not (email and password and repeat_password):
-        abort(422, description="Please make sure to include the following params: username, password, repeat_password")
+        abort(422, description="Please make sure to include the following params: email, password, repeat_password")
     elif len(password)<12:
         abort(422, description="Password should be more then 12 characters long and repeat_password should match password")
     elif password != repeat_password:

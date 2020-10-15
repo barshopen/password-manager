@@ -1,16 +1,21 @@
 version: "3.8"
 services:
-  db:
+  web:
+    build: .
+    ports:
+      - 8000:8000
+  mysql-server:
     image: mysql:latest
     restart: always
     environment:
       MYSQL_DATABASE: "db"
       MYSQL_USER: "barshopen"
-      MYSQL_PASSWORD: "password"
-      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_PASSWORD: "very_secret_secret"
+      MYSQL_ROOT_PASSWORD: "secret"
     ports:
       - 3306:3306
     volumes:
       - my_db:/src/website
+
 volumes:
   my_db:

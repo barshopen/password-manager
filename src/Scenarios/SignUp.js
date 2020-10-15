@@ -9,17 +9,17 @@ export default () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    window
-    .fetch('/signup', {
+    const f = new FormData();
+    for (let k in form){
+      f.append(k, form[k]);
+    }
+    window.fetch('/api/sign_up', {
       method: 'POST',
       headers: {
-        'content-type': 'application/json;charset=UTF-8',
         delay: 1500,
             },
-      body: JSON.stringify({
-        form: form
-      }),
-    })
+      body: f,
+    }).then(res=>{console.log("Request", res)}, err=>{console.log("error", err)})
   }
 
   function onChangeHandler(property, val) {
