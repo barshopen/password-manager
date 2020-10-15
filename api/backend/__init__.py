@@ -6,7 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from cryptography.fernet import Fernet
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../../build", static_url_path="/")
 
 config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 config.read('.config')
@@ -19,6 +19,9 @@ app.config['JWT_SECRET_KEY'] = config['SECRETS']['LoginManagerKey']
 
 app.config['SQLALCHEMY_DATABASE_URI'] = config.get(environment, 'SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+if environment == "development":
+    app.config['SQLALCHEMY_ECHO'] = False
+
 db = SQLAlchemy(app)
 
 
