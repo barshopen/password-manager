@@ -5,12 +5,7 @@ from backend import app, db, auth, passwordStore
 
 @app.route('/')
 def index():
-    print("got here")
     return app.send_static_file('index.html')
-
-@app.route('/api/time')
-def get_current_time():
-    return {'time': time.time()}
 
 @app.route("/api/get_password", methods=['POST'])
 @jwt_required
@@ -48,15 +43,13 @@ def login():
 def register():
     form = request.form.to_dict()
     print(form)
+
     name = form.get('name')
     password = form.get('password')
     confirm_password = form.get('confirm_password')
     email = form.get('email')
 
-    user =  auth.register_user(email, password, confirm_password)
-    print(user)
-    return user
-    # return auth.register_user(name, email, password, confirm_password)
+    return auth.register_user(email, password, confirm_password)
 
 
 @app.route("/api/hello", methods=['GET'])
