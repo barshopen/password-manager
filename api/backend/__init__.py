@@ -14,7 +14,7 @@ app = Flask(__name__, static_folder="../../build", static_url_path="/")
 config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 config.read('configfile')
 environment = os.environ['FLASK_ENV']
-
+print(environment)
 if 'SECRETS' not in config:
     raise Exception(
         ".config file isn't structured properly, please look at .config-TEMPLATE for help")
