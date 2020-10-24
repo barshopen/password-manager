@@ -117,6 +117,6 @@ def get_user_id(email: str) -> int:
 def get_user(email: str) -> User:
     return User.query.filter_by(email=email).first()
 
-db.drop_all()
-db.create_all()
-#User.create("bar.shopen@gmail.com", "secretsecretsecret")
+if environment == 'development':
+    db.drop_all()
+    db.create_all()
