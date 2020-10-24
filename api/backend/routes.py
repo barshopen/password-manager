@@ -3,6 +3,11 @@ from flask import render_template, url_for, jsonify, request, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from backend import app, db, auth, passwordStore
 
+
+@app.errorhandler(404)
+def not_found(e):
+    return app.send_static_file('index.html')
+
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
@@ -53,6 +58,5 @@ def register():
 
 
 @app.route("/api/hello", methods=['GET'])
-@jwt_required
 def hello():
     return "hello"

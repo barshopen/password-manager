@@ -1,3 +1,6 @@
+import { createGlobalStyle } from "styled-components";
+
+const LocalReset = createGlobalStyle`
 /****** Elad Shechter's RESET *******/
 /*** box sizing border-box for all elements ***/
 *,
@@ -5,12 +8,6 @@
 *::after {
   box-sizing: border-box;
 }
-
-html,
-body {
-  height: 100%;
-}
-
 a {
   text-decoration: none;
   color: inherit;
@@ -59,3 +56,6 @@ fieldset {
   padding: 0;
   margin: 0;
 }
+`;
+
+export default LocalReset;

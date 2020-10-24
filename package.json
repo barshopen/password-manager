@@ -11,15 +11,16 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.2.0",
+    "styled-normalize": "^8.0.7"
   },
   "scripts": {
     "lint": "eslint",
     "start": "react-scripts start",
-    "start-api": "cd api && pipenv run flask run --no-debugger",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "start-api": "yarn build && cd api && pipenv run flask run --no-debugger",
     "deploy": "yarn build && docker build --tag password-manager-front-end . && docker run -it -p 8000:8000 --rm password-manager-front-end"
   },
   "eslintConfig": {
@@ -43,6 +44,5 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
     "prettier": "^2.1.2"
-  },
-  "proxy": "http://localhost:5000"
+  }
 }

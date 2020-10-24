@@ -1,11 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "normalize.css";
 import App from "src/App";
 import * as serviceWorker from "src/serviceWorker";
+import { Normalize } from "styled-normalize";
+import LocalRest from "src/Styles/LocalReset";
+import Typography from "src/Styles/Typography";
+import GlobalStyle from "src/Styles/GlobalStyle";
 
 ReactDOM.render(
   <React.StrictMode>
+    <LocalRest />
+    <Typography />
+    <Normalize />
+    <GlobalStyle />
     <App />
   </React.StrictMode>,
   document.getElementById("root")

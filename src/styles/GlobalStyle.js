@@ -1,27 +1,41 @@
 import { createGlobalStyle } from "styled-components";
+import Breakpoints from "src/Styles/Responsive/Breakpoints";
 
-export const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
+    body {
+    }
+    h1,
+    h2{
+        font-family: 'Raleway', sans-serif;
+        font-weight:400;
+    }
+    h1{
+        color: black;
+        @media ${Breakpoints.break1} {   
+            font-size: 30rem;
+        }
+        @media ${Breakpoints.break2}{
+            font-size: 38rem   
+        }
+        @media ${Breakpoints.break3}, ${Breakpoints.break4} {   
+            font-size: 50rem;
+        }
+    }
 
-body{
-  font-family: 'Lato', sans-serif;
-  height: 100%;
-}
+    h2{
+        color:black;
+        @media ${Breakpoints.break1} {   
+            font-size: 22rem;
+        }
+        @media ${Breakpoints.break2}{
+            font-size: 28rem   
+        }
+        @media ${Breakpoints.break3}, ${Breakpoints.break4} {   
+            font-size: 36rem;
+        }
 
-h1, h2{
-  font-family: 'Roboto', sans-serif;
-}
+    }
 
-h1{
-  font-size: 4rem;
-}
-
-h2{
-  font-size: 2rem;
-}
-
-a{
-    text-decoration: none;
-}
 `;
 
 export default GlobalStyle;
