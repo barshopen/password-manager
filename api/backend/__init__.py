@@ -11,10 +11,11 @@ load_dotenv()
 
 app = Flask(__name__, static_folder="../../build", static_url_path="/")
 
+environment = os.environ['FLASK_ENV']
+
 config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
 config.read('configfile')
-environment = os.environ['FLASK_ENV']
-print(environment)
+
 if 'SECRETS' not in config:
     raise Exception(
         ".config file isn't structured properly, please look at .config-TEMPLATE for help")
@@ -25,15 +26,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 if environment == "development":
     app.config['SQLALCHEMY_ECHO'] = False
 
-db = SQLAlchemy(app)
 
 
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-
-key = config['SECRETS']['SymetricKeyBytes'].encode("utf-8")
-
-fernet = Fernet(key)
+db = SQLAlchemy(app)
+fernet = Fernet(config['SECRETS']['SymetricKey'].encode("utf-8"))
 
 from backend import routes  # nopep8
 from backend import models  # nopep8
